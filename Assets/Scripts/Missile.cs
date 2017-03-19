@@ -1,33 +1,58 @@
-﻿using UnityEngine;
+using InControl;
+using System.Collections;
+using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
     public float thrust;
     public float controlThrust;
-    private Rigidbody2D rb;
+    private Rigidbody2D rigidBody;
 
-    void Start()
+    [HideInInspector]
+    public InputDevice inputDevice;
+
+    private bool inputActive = false;
+
+    void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
+        StartCoroutine(InputDelay());
+    }
+
+    IEnumerator InputDelay()
+    {
+        inputActive = false;
+        yield return new WaitForSeconds(0.25f);
+        inputActive = true;
     }
 
     void FixedUpdate()
     {
-        rb.AddForce(transform.up * thrust);
+        rigidBody.AddForce(transform.up * thrust);
 
-        float vertInput = Input.GetAxis("Right Stick Vertical");
-        float horzInput = Input.GetAxis("Right Stick Horizontal");
-
-        Vector3 inputDir = new Vector3(horzInput, vertInput);
-        Vector3 controlDir = Vector3.Reflect(inputDir, transform.right);
-
-        if (Vector3.Distance(-transform.up, controlDir) <= 0.3f)
+        if (inputActive)
         {
-            controlDir = -transform.up;
+            Vector3 inputDir = transform.TransformDirection(inputDevice.RightStick);
+            //Vector3 inputDir = inputDevice.RightStick;
+            Vector3 controlDir = Vector3.Reflect(inputDir, transform.right);
+
+            if (Vector3.Distance(-transform.up, controlDir) <= 0.3f)
+            {
+                controlDir = -transform.up;
+            }
+
+            Vector3 forcePosition = transform.position + (-transform.up * 0.5f);
+            rigidBody.AddForceAtPosition(controlDir * controlThrust, forcePosition);
         }
+    }
 
-        Vector3 forcePosition = transform.position + (-transform.up * 0.5f);
-
-        rb.AddForceAtPosition(controlDir * controlThrust, forcePosition);
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        var otherLayer = collision.collider.gameObject.layer;
+        if (otherLayer != GameLayers.Environment)
+        {
+            Destroy(collision.collider.gameObject);
+        }
+        Destroy(gameObject);
     }
 }

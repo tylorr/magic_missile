@@ -1,40 +1,62 @@
+using InControl;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
-    public float moveSpeed;
+    public float normalMoveSpeed;
+    public float slowMoveSpeed;
+    public int inputDeviceIndex;
 
-    public GameObject missilePrefab;
+    private float currentMoveSpeed;
+    
+    public Missile missilePrefab;
 
-    private Rigidbody2D rb;
-    private GameObject activeMissile;
+    private Rigidbody2D rigidBody;
+    private Missile activeMissile;
     private bool triggerHeld = false;
 
-    void Start () {
-        rb = GetComponent<Rigidbody2D>();
+    private InputDevice inputDevice;
+
+    void Awake() {
+        currentMoveSpeed = normalMoveSpeed;
+        inputDevice = InputManager.Devices[inputDeviceIndex];
+        rigidBody = GetComponent<Rigidbody2D>();
     }
 
-    void FixedUpdate () {
-        float vertInput = Input.GetAxis("Left Stick Vertical");
-        float horzInput = Input.GetAxis("Left Stick Horizontal");
+    void Update()
+    {
+        if (inputDevice.GetControl(InputControlType.Start))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
 
-        Vector3 inputDir = new Vector3(horzInput, vertInput);
+    void FixedUpdate() {
+        Vector3 inputDir = inputDevice.LeftStick;
+        rigidBody.velocity = inputDir * currentMoveSpeed;
 
-        rb.velocity = inputDir * moveSpeed;
-
-        if (Input.GetAxis("Right Trigger") > 0)
+        if (inputDevice.GetControl(InputControlType.RightTrigger) > 0)
         {
             if (triggerHeld == false)
             {
                 if (activeMissile == null)
                 {
-                    activeMissile = Instantiate(missilePrefab, transform.position, Quaternion.identity) as GameObject;
+                    StartCoroutine(MoveSlow());
+                    activeMissile = Instantiate(missilePrefab, transform.position, Quaternion.FromToRotation(Vector3.up, inputDevice.RightStick));
+                    activeMissile.inputDevice = inputDevice;
+
+                    activeMissile.gameObject.layer = gameObject.layer;
+
+                    var spriteRenderer = GetComponent<SpriteRenderer>();
+                    var missileSpriteRenderer = activeMissile.GetComponent<SpriteRenderer>();
+                    missileSpriteRenderer.color = spriteRenderer.color;
                 }
                 else
                 {
-                    Destroy(activeMissile);
+                    Destroy(activeMissile.gameObject);
                 }
 
                 triggerHeld = true;
@@ -44,6 +66,12 @@ public class Player : MonoBehaviour {
         {
             triggerHeld = false;
         }
+    }
 
+    IEnumerator MoveSlow()
+    {
+        currentMoveSpeed = slowMoveSpeed;
+        yield return new WaitForSeconds(1);
+        currentMoveSpeed = normalMoveSpeed;
     }
 }
