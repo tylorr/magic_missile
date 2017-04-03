@@ -1,77 +1,76 @@
 using InControl;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using System;
 
 public class Player : MonoBehaviour {
 
     public float normalMoveSpeed;
     public float slowMoveSpeed;
-    public int inputDeviceIndex;
 
-    private float currentMoveSpeed;
-    
     public Missile missilePrefab;
 
-    private Rigidbody2D rigidBody;
-    private Missile activeMissile;
-    private bool triggerHeld = false;
+    private float _currentMoveSpeed;
 
-    private InputDevice inputDevice;
+    private Rigidbody2D _rigidBody;
+    private Missile _activeMissile;
+    private bool _triggerHeld = false;
+
+    private InputDevice _inputDevice;
 
     void Awake() {
-        currentMoveSpeed = normalMoveSpeed;
-        inputDevice = InputManager.Devices[inputDeviceIndex];
-        rigidBody = GetComponent<Rigidbody2D>();
+        _currentMoveSpeed = normalMoveSpeed;
+        _rigidBody = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    public void SetColor(Color color)
     {
-        if (inputDevice.GetControl(InputControlType.Start))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        GetComponent<SpriteRenderer>().color = color;
+    }
+
+    public void SetInputDevice(InputDevice inputDevice)
+    {
+        _inputDevice = inputDevice;
     }
 
     void FixedUpdate() {
-        Vector3 inputDir = inputDevice.LeftStick;
-        rigidBody.velocity = inputDir * currentMoveSpeed;
+        Vector3 inputDir = _inputDevice.LeftStick;
+        _rigidBody.velocity = inputDir * _currentMoveSpeed;
 
-        if (inputDevice.GetControl(InputControlType.RightTrigger) > 0)
+        if (_inputDevice.GetControl(InputControlType.RightTrigger) > 0)
         {
-            if (triggerHeld == false)
+            if (_triggerHeld == false)
             {
-                if (activeMissile == null)
+                if (_activeMissile == null)
                 {
                     StartCoroutine(MoveSlow());
-                    activeMissile = Instantiate(missilePrefab, transform.position, Quaternion.FromToRotation(Vector3.up, inputDevice.RightStick));
-                    activeMissile.inputDevice = inputDevice;
+                    _activeMissile = Instantiate(missilePrefab, transform.position, Quaternion.FromToRotation(Vector3.up, _inputDevice.RightStick));
+                    _activeMissile.inputDevice = _inputDevice;
 
-                    activeMissile.gameObject.layer = gameObject.layer;
+                    _activeMissile.gameObject.layer = gameObject.layer;
 
                     var spriteRenderer = GetComponent<SpriteRenderer>();
-                    var missileSpriteRenderer = activeMissile.GetComponent<SpriteRenderer>();
+                    var missileSpriteRenderer = _activeMissile.GetComponent<SpriteRenderer>();
                     missileSpriteRenderer.color = spriteRenderer.color;
                 }
                 else
                 {
-                    Destroy(activeMissile.gameObject);
+                    Destroy(_activeMissile.gameObject);
                 }
 
-                triggerHeld = true;
+                _triggerHeld = true;
             }
         }
         else
         {
-            triggerHeld = false;
+            _triggerHeld = false;
         }
     }
 
     IEnumerator MoveSlow()
     {
-        currentMoveSpeed = slowMoveSpeed;
+        _currentMoveSpeed = slowMoveSpeed;
         yield return new WaitForSeconds(1);
-        currentMoveSpeed = normalMoveSpeed;
+        _currentMoveSpeed = normalMoveSpeed;
     }
 }
