@@ -1,6 +1,4 @@
 using InControl;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -22,6 +20,7 @@ public class GameManager : MonoBehaviour
             var player = Instantiate(playerPrefab, playerSpawnMarkers[i].position, Quaternion.identity);
             player.SetColor(playerColors[i]);
             player.SetInputDevice(inputDevice);
+            player.gameObject.layer = GameLayers.PlayerLayerFromIndex(i);
         }
     }
 }
