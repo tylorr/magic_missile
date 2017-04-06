@@ -32,8 +32,8 @@ public class Missile : MonoBehaviour
 
         if (inputActive)
         {
-            Vector3 inputDir = transform.TransformDirection(inputDevice.RightStick);
-            //Vector3 inputDir = inputDevice.RightStick;
+            //Vector3 inputDir = transform.TransformDirection(inputDevice.RightStick);
+            Vector3 inputDir = inputDevice.RightStick;
             Vector3 controlDir = Vector3.Reflect(inputDir, transform.right);
 
             if (Vector3.Distance(-transform.up, controlDir) <= 0.3f)

@@ -9,6 +9,8 @@ public class Player : MonoBehaviour {
     public float slowMoveSpeed;
 
     public Missile missilePrefab;
+    public GameObject bazooka;
+    private SpriteRenderer bazookaSprite;
 
     private float _currentMoveSpeed;
 
@@ -21,6 +23,7 @@ public class Player : MonoBehaviour {
     void Awake() {
         _currentMoveSpeed = normalMoveSpeed;
         _rigidBody = GetComponent<Rigidbody2D>();
+        bazookaSprite = bazooka.GetComponent<SpriteRenderer>();
     }
 
     public void SetColor(Color color)
@@ -34,8 +37,23 @@ public class Player : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        Vector3 inputDir = _inputDevice.LeftStick;
-        _rigidBody.velocity = inputDir * _currentMoveSpeed;
+        Vector3 leftStickInputDir = _inputDevice.LeftStick;
+        Vector3 rightStickInputDir = _inputDevice.RightStick;
+        _rigidBody.velocity = leftStickInputDir * _currentMoveSpeed;
+
+        if (_activeMissile == null)
+        {
+            if (!bazookaSprite.enabled)
+            {
+                bazookaSprite.enabled = true;
+            }
+
+            if (rightStickInputDir.magnitude > 0)
+            {
+                var rightStickRotation = Quaternion.LookRotation(rightStickInputDir);
+                bazooka.transform.rotation = new Quaternion(0f, 0f, rightStickRotation.z, rightStickRotation.w);
+            }
+        }
 
         if (_inputDevice.GetControl(InputControlType.RightTrigger) > 0)
         {
@@ -44,7 +62,7 @@ public class Player : MonoBehaviour {
                 if (_activeMissile == null)
                 {
                     StartCoroutine(MoveSlow());
-                    _activeMissile = Instantiate(missilePrefab, transform.position, Quaternion.FromToRotation(Vector3.up, _inputDevice.RightStick));
+                    _activeMissile = Instantiate(missilePrefab, transform.position, Quaternion.FromToRotation(Vector3.up, rightStickInputDir));
                     _activeMissile.inputDevice = _inputDevice;
 
                     _activeMissile.gameObject.layer = gameObject.layer;
@@ -52,6 +70,8 @@ public class Player : MonoBehaviour {
                     var spriteRenderer = GetComponent<SpriteRenderer>();
                     var missileSpriteRenderer = _activeMissile.GetComponent<SpriteRenderer>();
                     missileSpriteRenderer.color = spriteRenderer.color;
+
+                    bazookaSprite.enabled = false;
                 }
                 else
                 {
