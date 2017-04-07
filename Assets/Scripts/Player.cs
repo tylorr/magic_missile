@@ -10,7 +10,8 @@ public class Player : MonoBehaviour {
 
     public Missile missilePrefab;
     public GameObject bazooka;
-    private SpriteRenderer bazookaSprite;
+
+    private SpriteRenderer _bazookaSprite;
 
     private float _currentMoveSpeed;
 
@@ -19,16 +20,22 @@ public class Player : MonoBehaviour {
     private bool _triggerHeld = false;
 
     private InputDevice _inputDevice;
+    private bool _tankControls;
 
     void Awake() {
         _currentMoveSpeed = normalMoveSpeed;
         _rigidBody = GetComponent<Rigidbody2D>();
-        bazookaSprite = bazooka.GetComponent<SpriteRenderer>();
+        _bazookaSprite = bazooka.GetComponent<SpriteRenderer>();
     }
 
     public void SetColor(Color color)
     {
         GetComponent<SpriteRenderer>().color = color;
+    }
+
+    public void SetTankControls(bool tankControls)
+    {
+        _tankControls = tankControls;
     }
 
     public void SetInputDevice(InputDevice inputDevice)
@@ -43,15 +50,15 @@ public class Player : MonoBehaviour {
 
         if (_activeMissile == null)
         {
-            if (!bazookaSprite.enabled)
+            if (!_bazookaSprite.enabled)
             {
-                bazookaSprite.enabled = true;
+                _bazookaSprite.enabled = true;
             }
 
             if (rightStickInputDir.magnitude > 0)
             {
-                var rightStickRotation = Quaternion.LookRotation(rightStickInputDir);
-                bazooka.transform.rotation = new Quaternion(0f, 0f, rightStickRotation.z, rightStickRotation.w);
+                float angle = Mathf.Atan2(rightStickInputDir.y, rightStickInputDir.x) * Mathf.Rad2Deg;
+                bazooka.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
         }
 
@@ -71,7 +78,9 @@ public class Player : MonoBehaviour {
                     var missileSpriteRenderer = _activeMissile.GetComponent<SpriteRenderer>();
                     missileSpriteRenderer.color = spriteRenderer.color;
 
-                    bazookaSprite.enabled = false;
+                    _activeMissile.TankControls = _tankControls;
+
+                    _bazookaSprite.enabled = false;
                 }
                 else
                 {

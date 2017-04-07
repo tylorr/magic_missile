@@ -1,6 +1,12 @@
 using InControl;
 using UnityEngine;
 
+public class PlayerConfig
+{
+    public InputDevice inputDevice;
+    public bool tankControls;
+}
+
 public class PlayerSelectController : MonoBehaviour
 {
     public GameManager gameManager;
@@ -30,21 +36,25 @@ public class PlayerSelectController : MonoBehaviour
         {
             gameObject.SetActive(false);
 
-            var inputDevices = new InputDevice[4];
+            var playerConfigs = new PlayerConfig[4];
             for (int i = 0; i < playerSelectors.Length; i++)
             {
                 var playerSelect = playerSelectors[i];
                 if (playerSelect.Joined)
                 {
-                    inputDevices[i] = playerSelect.GetInputDevice();
+                    playerConfigs[i] = new PlayerConfig
+                    {
+                        inputDevice = playerSelect.GetInputDevice(),
+                        tankControls = playerSelect.TankControls
+                    };
                 }
                 else
                 {
-                    inputDevices[i] = null;
+                    playerConfigs[i] = null;
                 }
             }
 
-            gameManager.StartGame(inputDevices);
+            gameManager.StartGame(playerConfigs);
         }
     }
 }

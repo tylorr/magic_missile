@@ -12,16 +12,23 @@ public class PlayerSelect : MonoBehaviour
     public Image icon;
     public GameObject joinLabel;
     public GameObject leaveLabel;
+    public GameObject tankModeUI;
+    public Text tankModeLabel;
 
     public bool Joined { get; private set; }
+    public bool TankControls { get; private set; }
 
     private UIActions _uiActions;
 
     private void Awake()
     {
+        TankControls = true;
+        Joined = false;
+
         _uiActions = new UIActions();
         SetJoined(false);
         SetInputDevice(null);
+        UpdateTankControlLabel();
     }
 
     public void SetInputDevice(InputDevice inputDevice)
@@ -43,6 +50,8 @@ public class PlayerSelect : MonoBehaviour
         icon.color = joined ? Color.white : IntColor(82, 82, 82, 213);
         joinLabel.SetActive(!joined);
         leaveLabel.SetActive(joined);
+
+        tankModeUI.SetActive(joined);
     }
 
     public InputDevice GetInputDevice()
@@ -71,5 +80,16 @@ public class PlayerSelect : MonoBehaviour
         {
             playerSelectController.StartGame();
         }
+
+        if (_uiActions.Toggle.WasPressed)
+        {
+            TankControls = !TankControls;
+            UpdateTankControlLabel();
+        }
+    }
+
+    private void UpdateTankControlLabel()
+    {
+        tankModeLabel.text = "Tank controls: " + (TankControls ? "ON" : "OFF");
     }
 }
