@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < playerConfigs.Length; i++)
         {
             var playerConfig = playerConfigs[i];
-            if (playerConfig.inputDevice == null)
+            if (playerConfig == null)
             {
                 continue;
             }

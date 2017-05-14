@@ -1,4 +1,5 @@
 using InControl;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +23,7 @@ public class PlayerSelect : MonoBehaviour
 
     private void Awake()
     {
-        TankControls = true;
+        TankControls = false;
         Joined = false;
 
         _uiActions = new UIActions();
@@ -33,6 +34,14 @@ public class PlayerSelect : MonoBehaviour
 
     public void SetInputDevice(InputDevice inputDevice)
     {
+        if (inputDevice != null)
+        {
+            StartCoroutine(WaitForInput());
+        } else
+        {
+            StopAllCoroutines();
+        }
+
         content.SetActive(inputDevice != null);
         noDeviceLabel.SetActive(inputDevice == null);
         _uiActions.Device = inputDevice;
@@ -59,32 +68,37 @@ public class PlayerSelect : MonoBehaviour
         return _uiActions.Device;
     }
 
-    public void Update()
+    public IEnumerator WaitForInput()
     {
-        if (Joined)
+        while (true)
         {
-            if (_uiActions.Back.WasPressed)
+            if (Joined)
             {
-                SetJoined(false);
+                if (_uiActions.Back.WasPressed)
+                {
+                    SetJoined(false);
+                }
             }
-        }
-        else
-        {
-            if (_uiActions.Select.WasPressed)
+            else
             {
-                SetJoined(true);
+                if (_uiActions.Select.WasPressed)
+                {
+                    SetJoined(true);
+                }
             }
-        }
 
-        if (_uiActions.Start.WasPressed)
-        {
-            playerSelectController.StartGame();
-        }
+            if (_uiActions.Start.WasPressed)
+            {
+                playerSelectController.StartGame();
+            }
 
-        if (_uiActions.Toggle.WasPressed)
-        {
-            TankControls = !TankControls;
-            UpdateTankControlLabel();
+            if (_uiActions.Toggle.WasPressed)
+            {
+                TankControls = !TankControls;
+                UpdateTankControlLabel();
+            }
+
+            yield return null;
         }
     }
 
