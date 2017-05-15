@@ -84,7 +84,7 @@ public class Player : MonoBehaviour {
                 }
                 else
                 {
-                    Destroy(_activeMissile.gameObject);
+                    _activeMissile.Boost();
                 }
 
                 _triggerHeld = true;
@@ -92,6 +92,10 @@ public class Player : MonoBehaviour {
         }
         else
         {
+            if (_triggerHeld == true && _activeMissile && _activeMissile.isBoosting)
+            {
+                Destroy(_activeMissile.gameObject);
+            }
             _triggerHeld = false;
         }
     }

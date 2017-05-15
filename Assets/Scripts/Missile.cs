@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
+    public bool isBoosting = false;
+
     public float thrust;
     public float controlThrust;
+    public float boostThrustMult;
+    public float boostControlThrustMult;
     private Rigidbody2D rigidBody;
 
     [HideInInspector]
@@ -63,5 +67,12 @@ public class Missile : MonoBehaviour
             Destroy(collision.collider.gameObject);
         }
         Destroy(gameObject);
+    }
+
+    public void Boost()
+    {
+        thrust *= boostThrustMult;
+        controlThrust *= boostControlThrustMult;
+        isBoosting = true;
     }
 }
