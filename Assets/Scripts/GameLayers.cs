@@ -8,6 +8,11 @@ public static class GameLayers
     public static readonly int Player4 = LayerMask.NameToLayer("Player 4");
     public static readonly int Environment = LayerMask.NameToLayer("Environment");
 
+    public static int AllPlayers()
+    {
+        return Player1 | Player2 | Player3 | Player4;
+    }
+
     public static int PlayerLayerFromIndex(int index)
     {
         switch (index)

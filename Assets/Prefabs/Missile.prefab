@@ -222,6 +222,8 @@ MonoBehaviour:
   controlThrust: 20
   boostThrustMult: 3
   boostControlThrustMult: 0
+  explosionPrefab: {fileID: 114782026046979584, guid: ef3394a9ac949cd48aaec2ffdfcba093,
+    type: 2}
 --- !u!212 &212232553925561500
 SpriteRenderer:
   m_ObjectHideFlags: 1

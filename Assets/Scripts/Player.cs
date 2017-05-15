@@ -94,10 +94,20 @@ public class Player : MonoBehaviour {
         {
             if (_triggerHeld == true && _activeMissile && _activeMissile.isBoosting)
             {
-                Destroy(_activeMissile.gameObject);
+                _activeMissile.Explode();
             }
             _triggerHeld = false;
         }
+    }
+
+    public void OnExplosionHit(Missile missile)
+    {
+        Destroy(gameObject);
+    }
+
+    public void OnMissileHit(Missile missile)
+    {
+        Destroy(gameObject);
     }
 
     IEnumerator MoveSlow()

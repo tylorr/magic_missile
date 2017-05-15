@@ -10,6 +10,8 @@ public class Missile : MonoBehaviour
     public float controlThrust;
     public float boostThrustMult;
     public float boostControlThrustMult;
+    public Explosion explosionPrefab;
+    
     private Rigidbody2D rigidBody;
 
     [HideInInspector]
@@ -59,14 +61,29 @@ public class Missile : MonoBehaviour
         }
     }
 
+    public void Explode()
+    {
+        var explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+
+        var playerTargets = explosion.Explode();
+        foreach (var playerTarget in playerTargets)
+        {
+            playerTarget.OnExplosionHit(this);
+        }
+
+        Destroy(gameObject);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         var otherLayer = collision.collider.gameObject.layer;
-        if (otherLayer != GameLayers.Environment)
+        var player = collision.collider.gameObject.GetComponent<Player>();
+        if (player)
         {
-            Destroy(collision.collider.gameObject);
+            player.OnMissileHit(this);
         }
-        Destroy(gameObject);
+
+        Explode();
     }
 
     public void Boost()
