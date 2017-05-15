@@ -10,7 +10,7 @@ public static class GameLayers
 
     public static int AllPlayers()
     {
-        return Player1 | Player2 | Player3 | Player4;
+        return 1 << Player1 | 1 << Player2 | 1 << Player3 | 1 << Player4;
     }
 
     public static int PlayerLayerFromIndex(int index)

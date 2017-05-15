@@ -65,7 +65,7 @@ public class Missile : MonoBehaviour
     {
         var explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
-        var playerTargets = explosion.Explode();
+        var playerTargets = explosion.Explode(gameObject.layer);
         foreach (var playerTarget in playerTargets)
         {
             playerTarget.OnExplosionHit(this);

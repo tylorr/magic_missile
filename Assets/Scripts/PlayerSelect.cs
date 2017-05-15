@@ -37,7 +37,8 @@ public class PlayerSelect : MonoBehaviour
         if (inputDevice != null)
         {
             StartCoroutine(WaitForInput());
-        } else
+        }
+        else
         {
             StopAllCoroutines();
         }
