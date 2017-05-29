@@ -2,6 +2,7 @@ using InControl;
 using System.Collections;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
 
@@ -22,10 +23,13 @@ public class Player : MonoBehaviour {
     private InputDevice _inputDevice;
     private bool _tankControls;
 
+    private Stack<Missile> _specialMissiles;
+
     void Awake() {
         _currentMoveSpeed = normalMoveSpeed;
         _rigidBody = GetComponent<Rigidbody2D>();
         _bazookaSprite = bazooka.GetComponent<SpriteRenderer>();
+        _specialMissiles = new Stack<Missile>();
     }
 
     public void SetColor(Color color)
@@ -41,6 +45,24 @@ public class Player : MonoBehaviour {
     public void SetInputDevice(InputDevice inputDevice)
     {
         _inputDevice = inputDevice;
+    }
+
+    public void AddSpecialMissiles(Missile missilePrefab, int count = 1)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            _specialMissiles.Push(missilePrefab);
+        }
+    }
+
+    private Missile GetNextMissilePrefab()
+    {
+        if (_specialMissiles.Count > 0)
+        {
+            return _specialMissiles.Pop();
+        }
+
+        return missilePrefab;
     }
 
     void FixedUpdate() {
@@ -69,7 +91,8 @@ public class Player : MonoBehaviour {
                 if (_activeMissile == null)
                 {
                     StartCoroutine(MoveSlow());
-                    _activeMissile = Instantiate(missilePrefab, transform.position, Quaternion.FromToRotation(Vector3.up, rightStickInputDir));
+
+                    _activeMissile = Instantiate(GetNextMissilePrefab(), transform.position, Quaternion.FromToRotation(Vector3.up, rightStickInputDir));
                     _activeMissile.inputDevice = _inputDevice;
 
                     _activeMissile.gameObject.layer = gameObject.layer;
@@ -110,5 +133,15 @@ public class Player : MonoBehaviour {
         _currentMoveSpeed = slowMoveSpeed;
         yield return new WaitForSeconds(1);
         _currentMoveSpeed = normalMoveSpeed;
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        var powerup = collider.GetComponent<Powerup>();
+        if (powerup == null) return;
+
+        powerup.Apply(this);
+
+        Destroy(powerup.gameObject);
     }
 }
