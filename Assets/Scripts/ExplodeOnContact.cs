@@ -11,7 +11,7 @@ public class ExplodeOnContact : MonoBehaviour
         var playerTargets = explosion.Explode(gameObject.layer);
         foreach (var playerTarget in playerTargets)
         {
-            playerTarget.OnExplosionHit();
+            playerTarget.OnExplosionHit(GetComponent<Owner>().player);
         }
 
         Destroy(gameObject);

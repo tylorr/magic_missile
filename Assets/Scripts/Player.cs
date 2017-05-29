@@ -12,6 +12,8 @@ public class Player : MonoBehaviour {
     public Missile missilePrefab;
     public GameObject bazooka;
 
+    public MetaPlayer MetaPlayer { get; private set; }
+
     private SpriteRenderer _bazookaSprite;
 
     private float _currentMoveSpeed;
@@ -65,6 +67,11 @@ public class Player : MonoBehaviour {
         return missilePrefab;
     }
 
+    public void SetMetaPlayer(MetaPlayer metaPlayer)
+    {
+        MetaPlayer = metaPlayer;
+    }
+
     void FixedUpdate() {
         Vector3 leftStickInputDir = _inputDevice.LeftStick;
         Vector3 rightStickInputDir = _inputDevice.RightStick;
@@ -93,6 +100,7 @@ public class Player : MonoBehaviour {
                     StartCoroutine(MoveSlow());
 
                     _activeMissile = Instantiate(GetNextMissilePrefab(), transform.position, Quaternion.FromToRotation(Vector3.up, rightStickInputDir));
+					_activeMissile.GetComponent<Owner>().player = this;
                     _activeMissile.inputDevice = _inputDevice;
 
                     _activeMissile.gameObject.layer = gameObject.layer;
@@ -123,8 +131,10 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void OnExplosionHit()
+    public void OnExplosionHit(Player player)
     {
+        player.MetaPlayer.killCount++;
+        Debug.Log("Nice kill! Count: " + player.MetaPlayer.killCount);
         Destroy(gameObject);
     }
 

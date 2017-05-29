@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 50507415764798630}
   - component: {fileID: 60195317068374544}
   - component: {fileID: 114808424975590380}
+  - component: {fileID: 114735032325916990}
   m_Layer: 0
   m_Name: Missile
   m_TagString: Untagged
@@ -222,6 +223,17 @@ MonoBehaviour:
   controlThrust: 20
   boostThrustMult: 3
   boostControlThrustMult: 0
+--- !u!114 &114735032325916990
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1393965319995038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e44cf3bb9da8942608726e3e65f4c8d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114808424975590380
 MonoBehaviour:
   m_ObjectHideFlags: 1
