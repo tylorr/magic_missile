@@ -92,20 +92,15 @@ public class Player : MonoBehaviour {
         }
         else
         {
-            if (_triggerHeld == true && _activeMissile && _activeMissile.isBoosting)
+            if (_triggerHeld == true && _activeMissile && _activeMissile.IsBoosting)
             {
-                _activeMissile.Explode();
+                _activeMissile.GetComponent<ExplodeOnContact>().Explode();
             }
             _triggerHeld = false;
         }
     }
 
-    public void OnExplosionHit(Missile missile)
-    {
-        Destroy(gameObject);
-    }
-
-    public void OnMissileHit(Missile missile)
+    public void OnExplosionHit()
     {
         Destroy(gameObject);
     }

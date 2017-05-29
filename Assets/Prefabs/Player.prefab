@@ -121,7 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalMoveSpeed: 4
   slowMoveSpeed: 1
-  missilePrefab: {fileID: 114531352803671900, guid: a412f9c31a54bcb40a348c3cfdf45a2e,
+  missilePrefab: {fileID: 114059233462994986, guid: d528fd43b9223854c9bdf98919f2ad65,
     type: 2}
   bazooka: {fileID: 1225805565259370}
 --- !u!212 &212011372592749758

@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
-    public bool isBoosting = false;
+    public bool IsBoosting { get; private set; }
 
     public float thrust;
     public float controlThrust;
     public float boostThrustMult;
     public float boostControlThrustMult;
-    public Explosion explosionPrefab;
     
     private Rigidbody2D rigidBody;
 
@@ -61,35 +60,10 @@ public class Missile : MonoBehaviour
         }
     }
 
-    public void Explode()
-    {
-        var explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-
-        var playerTargets = explosion.Explode(gameObject.layer);
-        foreach (var playerTarget in playerTargets)
-        {
-            playerTarget.OnExplosionHit(this);
-        }
-
-        Destroy(gameObject);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        var otherLayer = collision.collider.gameObject.layer;
-        var player = collision.collider.gameObject.GetComponent<Player>();
-        if (player)
-        {
-            player.OnMissileHit(this);
-        }
-
-        Explode();
-    }
-
     public void Boost()
     {
         thrust *= boostThrustMult;
         controlThrust *= boostControlThrustMult;
-        isBoosting = true;
+        IsBoosting = true;
     }
 }

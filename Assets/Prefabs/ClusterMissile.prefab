@@ -20,12 +20,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4588491654070238}
   - component: {fileID: 212232553925561500}
-  - component: {fileID: 114531352803671900}
   - component: {fileID: 50507415764798630}
   - component: {fileID: 60195317068374544}
-  - component: {fileID: 114808424975590380}
+  - component: {fileID: 114669489758832164}
+  - component: {fileID: 114059233462994986}
+  - component: {fileID: 114402209117303716}
   m_Layer: 0
-  m_Name: Missile
+  m_Name: ClusterMissile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -207,7 +208,7 @@ PolygonCollider2D:
       - {x: 0.07010987, y: -11.045}
       - {x: 0.1132544, y: -10.969497}
       - {x: 0.15639892, y: -10.85085}
---- !u!114 &114531352803671900
+--- !u!114 &114059233462994986
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -222,7 +223,7 @@ MonoBehaviour:
   controlThrust: 20
   boostThrustMult: 3
   boostControlThrustMult: 0
---- !u!114 &114808424975590380
+--- !u!114 &114402209117303716
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -234,6 +235,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionPrefab: {fileID: 114782026046979584, guid: ef3394a9ac949cd48aaec2ffdfcba093,
+    type: 2}
+--- !u!114 &114669489758832164
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1393965319995038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 610f64ec03407bc4bbd4385122491ffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  count: 5
+  distance: 0
+  clusterPrefab: {fileID: 114424961920975974, guid: 7774807352e716c4f86d6a059ad70dfe,
     type: 2}
 --- !u!212 &212232553925561500
 SpriteRenderer:
