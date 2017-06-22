@@ -125,7 +125,8 @@ public class Player : MonoBehaviour {
         {
             if (_triggerHeld == true && _activeMissile && _activeMissile.IsBoosting)
             {
-                _activeMissile.GetComponent<ExplodeOnContact>().Explode();
+                _activeMissile.GetComponent<Exploder>().Explode();
+                _activeMissile = null;
             }
             _triggerHeld = false;
         }

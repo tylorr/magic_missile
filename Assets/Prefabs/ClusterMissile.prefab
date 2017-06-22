@@ -223,6 +223,7 @@ MonoBehaviour:
   controlThrust: 20
   boostThrustMult: 3
   boostControlThrustMult: 0
+  collisionMagnitudeThreshold: 4
 --- !u!114 &114402209117303716
 MonoBehaviour:
   m_ObjectHideFlags: 1

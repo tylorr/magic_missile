@@ -10,6 +10,8 @@ public class Missile : MonoBehaviour
     public float controlThrust;
     public float boostThrustMult;
     public float boostControlThrustMult;
+
+    public float collisionMagnitudeThreshold;
     
     private Rigidbody2D rigidBody;
 
@@ -65,5 +67,29 @@ public class Missile : MonoBehaviour
         thrust *= boostThrustMult;
         controlThrust *= boostControlThrustMult;
         IsBoosting = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<Player>())
+        {
+            GetComponent<Exploder>().Explode();
+            return;
+        }
+
+        float maxMagnitude = 0.0f;
+        foreach (var contact in collision.contacts)
+        {
+            var collisionMagnitude = Vector2.Dot(contact.relativeVelocity, contact.normal);
+            if (collisionMagnitude > maxMagnitude)
+            {
+                maxMagnitude = collisionMagnitude;
+            }
+        }
+
+        if (maxMagnitude > collisionMagnitudeThreshold)
+        {
+            GetComponent<Exploder>().Explode();
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ExplodeOnContact : MonoBehaviour
+public class Exploder : MonoBehaviour
 {
     public Explosion explosionPrefab;
 
@@ -15,10 +15,5 @@ public class ExplodeOnContact : MonoBehaviour
         }
 
         Destroy(gameObject);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Explode();
     }
 }
