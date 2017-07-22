@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 50061490718056924}
   - component: {fileID: 114424961920975974}
   - component: {fileID: 114656162921989654}
+  - component: {fileID: 58479964895075580}
   m_Layer: 0
   m_Name: ClusterProjectile
   m_TagString: Untagged
@@ -37,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1729074491135236}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.98, y: -2.99, z: 0}
+  m_LocalPosition: {x: -3.217545, y: -1.024704, z: 0}
   m_LocalScale: {x: 0.14534687, y: 0.14534687, z: 0.14534687}
   m_Children: []
   m_Father: {fileID: 0}
@@ -63,6 +64,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &58479964895075580
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1729074491135236}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.28
 --- !u!114 &114424961920975974
 MonoBehaviour:
   m_ObjectHideFlags: 1
