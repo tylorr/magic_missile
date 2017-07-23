@@ -26,12 +26,14 @@ public class Player : MonoBehaviour {
     private bool _tankControls;
 
     private Stack<Missile> _specialMissiles;
+	private Animator animator;
 
     void Awake() {
         _currentMoveSpeed = normalMoveSpeed;
         _rigidBody = GetComponent<Rigidbody2D>();
         _bazookaSprite = bazooka.GetComponent<SpriteRenderer>();
         _specialMissiles = new Stack<Missile>();
+		animator = GetComponent<Animator>();
     }
 
     public void SetColor(Color color)
@@ -76,6 +78,10 @@ public class Player : MonoBehaviour {
         Vector3 leftStickInputDir = _inputDevice.LeftStick;
         Vector3 rightStickInputDir = _inputDevice.RightStick;
         _rigidBody.velocity = leftStickInputDir * _currentMoveSpeed;
+
+		animator.SetBool("isWalk", leftStickInputDir.x != 0 || leftStickInputDir.y != 0);
+		animator.SetFloat("moveX", leftStickInputDir.x);
+		animator.SetFloat("moveY", leftStickInputDir.y);
 
         if (_activeMissile == null)
         {
