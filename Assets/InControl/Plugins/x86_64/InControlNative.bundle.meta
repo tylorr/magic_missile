@@ -21,7 +21,7 @@ PluginImporter:
         DefaultValueInitialized: true
         OS: OSX
     Linux:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: None
     Linux64:
@@ -44,8 +44,12 @@ PluginImporter:
       enabled: 1
       settings:
         CPU: AnyCPU
-    Win:
+    SamsungTV:
       enabled: 0
+      settings:
+        STV_MODEL: STANDARD_13
+    Win:
+      enabled: 1
       settings:
         CPU: None
     Win64:
@@ -53,11 +57,6 @@ PluginImporter:
       settings:
         CPU: AnyCPU
     iOS:
-      enabled: 0
-      settings:
-        CompileFlags: 
-        FrameworkDependencies: 
-    tvOS:
       enabled: 0
       settings:
         CompileFlags: 

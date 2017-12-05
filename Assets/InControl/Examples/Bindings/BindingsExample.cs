@@ -81,6 +81,12 @@ namespace BindingsExample
 			//GUI.Label( new Rect( 10, y, 300, y + h ), "Active Device: " + playerActions.ActiveDevice.Name );
 			//y += h;
 
+			GUI.Label( new Rect( 10, y, 300, y + h ), "Last Device Class: " + playerActions.LastDeviceClass );
+			y += h;
+
+			GUI.Label( new Rect( 10, y, 300, y + h ), "Last Device Style: " + playerActions.LastDeviceStyle );
+			y += h;
+
 			var actionCount = playerActions.Actions.Count;
 			for (var i = 0; i < actionCount; i++)
 			{
@@ -93,6 +99,8 @@ namespace BindingsExample
 				}
 				name += " = " + action.Value;
 				//name += " via " + action.ActiveDevice.Name;
+				//name += ", class: " + action.LastDeviceClass;
+				//name += ", style: " + action.LastDeviceStyle;
 				GUI.Label( new Rect( 10, y, 500, y + h ), name );
 				y += h;
 
